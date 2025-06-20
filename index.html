@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodGrid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-neutral-900 text-white min-h-screen flex flex-col items-center p-6">
+  <h1 class="text-3xl font-bold mb-6">MoodGrid – Track Your Week</h1>
+
+  <div id="grid" class="grid grid-cols-7 gap-4 mb-6">
+    <!-- Days rendered here -->
+  </div>
+
+  <form id="moodForm" class="flex flex-col space-y-4 w-full max-w-sm">
+    <select id="daySelect" class="p-2 bg-neutral-800 border border-neutral-700 rounded">
+      <option value="" disabled selected>Select Day</option>
+      <option value="0">Sunday</option>
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="5">Friday</option>
+      <option value="6">Saturday</option>
+    </select>
+    <select id="moodSelect" class="p-2 bg-neutral-800 border border-neutral-700 rounded">
+      <option value="" disabled selected>Select Mood</option>
+      <option value="bg-green-500">Calm</option>
+      <option value="bg-yellow-500">Creative</option>
+      <option value="bg-red-500">Stressed</option>
+      <option value="bg-blue-500">Focused</option>
+      <option value="bg-purple-500">Reflective</option>
+      <option value="bg-gray-500">Neutral</option>
+    </select>
+    <button class="p-2 bg-neutral-700 hover:bg-neutral-600 rounded">Set Mood</button>
+  </form>
+
+  <script>
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const grid = document.getElementById('grid')
+    const form = document.getElementById('moodForm')
+    const daySelect = document.getElementById('daySelect')
+    const moodSelect = document.getElementById('moodSelect')
+
+    const moodState = Array(7).fill('bg-neutral-800')
+
+    function renderGrid() {
+      grid.innerHTML = ''
+      days.forEach((day, i) => {
+        const box = document.createElement('div')
+        box.className = `w-16 h-16 flex items-center justify-center rounded ${moodState[i]} text-xs`
+        box.textContent = day
+        grid.appendChild(box)
+      })
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      const day = parseInt(daySelect.value)
+      const mood = moodSelect.value
+      if (!isNaN(day) && mood) {
+        moodState[day] = mood
+        renderGrid()
+      }
+    })
+
+    renderGrid()
+  </script>
+</body>
+</html>
